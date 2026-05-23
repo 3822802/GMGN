@@ -1,10 +1,21 @@
 # GMGN
 
-Тестовый репозиторий проекта FIVE.
+## Push (всегда одна команда)
 
-## Push
-
+**Один раз** — сохрани токен:
 ```bash
-export GITHUB_TOKEN='ghp_твой_токен'
-git push "https://Pyatka11:${GITHUB_TOKEN}@github.com/Pyatka11/GMGN.git" main
+cp .env.github.example .env.github
+# открой .env.github и вставь GITHUB_TOKEN=ghp_...
+```
+
+**Каждый раз** после коммита:
+```bash
+./push.sh
+```
+
+Короткий вариант: `./push`
+
+Разово с токеном в команде (без файла):
+```bash
+GITHUB_TOKEN='ghp_токен' ./push.sh
 ```
