@@ -1,21 +1,33 @@
 # GMGN
 
-## Push (всегда одна команда)
+**GMGN** — Base mini app: daily GM, points, airdrop.
 
-**Один раз** — сохрани токен:
+## Dev
+
 ```bash
-cp .env.github.example .env.github
-# открой .env.github и вставь GITHUB_TOKEN=ghp_...
+npm install
+npm run dev
 ```
 
-**Каждый раз** после коммита:
+## Contract
+
+Deploy `contracts/src/GMGNHub.sol` on Base, then set `HUB_CONTRACT_ADDRESS` in `src/config/contract.ts`.
+
+**GM:** 3 free/day (+10 pts), then 0.0001 ETH (+20 pts)
+
+**Deploy ERC20:** 1 free lifetime (+20 pts), then 0.0001 ETH (+40 pts) — like [gas.zip/deployer](https://www.gas.zip/deployer) + [onchaingm.com](https://onchaingm.com/)
+
+## Push
+
 ```bash
 ./push.sh
 ```
 
-Короткий вариант: `./push`
+(Tокен в `.env.github`)
 
-Разово с токеном в команде (без файла):
-```bash
-GITHUB_TOKEN='ghp_токен' ./push.sh
-```
+## TODO
+
+- [ ] Новое имя, лого, домен Vercel
+- [ ] `NEXT_PUBLIC_SITE_URL` в Vercel
+- [ ] Farcaster `accountAssociation` в `src/config/manifest.ts`
+- [ ] Base app_id / Talent verification meta (если нужны)

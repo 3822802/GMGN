@@ -1,29 +1,39 @@
 # dependencies
-node_modules/
-.pnp
-.pnp.js
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
-# build
-.next/
-out/
-dist/
-build/
+# testing
+/coverage
 
-# env & secrets — НИКОГДА не коммитить
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# env & secrets
 .env
 .env.*
 !.env.example
 !.env.github.example
 
-# vercel — привязка к аккаунту/проекту, не коммитить
+# vercel
 .vercel/
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
-# OS / IDE
+# misc
 .DS_Store
 *.pem
 .idea/
@@ -32,3 +42,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# foundry
+/contracts/out
+/cache

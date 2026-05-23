@@ -1,0 +1,20 @@
+{
+  "id": "gmgn",
+  "name": "GMGN",
+  "short_name": "GMGN",
+  "description": "Tap GM on Base. Earn points for airdrop.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050508",
+  "theme_color": "#00f5ff",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
