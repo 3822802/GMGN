@@ -1,0 +1,34 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# build
+.next/
+out/
+dist/
+build/
+
+# env & secrets — НИКОГДА не коммитить
+.env
+.env.*
+!.env.example
+!.env.github.example
+
+# vercel — привязка к аккаунту/проекту, не коммитить
+.vercel/
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / IDE
+.DS_Store
+*.pem
+.idea/
+.vscode/
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
