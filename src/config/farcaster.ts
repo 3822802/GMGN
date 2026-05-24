@@ -23,7 +23,7 @@ export function buildFcMiniAppEmbed(siteUrl: string = CANONICAL_SITE_URL) {
         name: FARCASTER_APP_NAME,
         url: origin,
         splashImageUrl: getAppSplashUrl(CANONICAL_SITE_URL),
-        splashBackgroundColor: "#050508",
+        splashBackgroundColor: "#eeccff",
       },
     },
   };

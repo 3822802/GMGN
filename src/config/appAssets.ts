@@ -3,10 +3,10 @@ export const CANONICAL_SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
   "http://localhost:3000";
 
-export const APP_ICON_PATH = "/icon.svg";
-export const APP_SPLASH_PATH = "/icon.svg";
-export const APP_IMAGE_PATH = "/icon.svg";
-export const APP_HERO_PATH = "/icon.svg";
+export const APP_ICON_PATH = "/icon.png";
+export const APP_SPLASH_PATH = "/splash.png";
+export const APP_IMAGE_PATH = "/image.png";
+export const APP_HERO_PATH = "/image.png";
 
 export function getSiteOrigin(requestHost?: string | null) {
   const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");

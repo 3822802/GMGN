@@ -6,11 +6,13 @@ import {
   getAppSplashUrl,
 } from "@/config/appAssets";
 
-/** Add accountAssociation after Farcaster domain verification */
+/** Farcaster domain verification (gmgn-bice.vercel.app) */
 export const FARCASTER_ACCOUNT_ASSOCIATION = {
-  header: "",
-  payload: "",
-  signature: "",
+  header:
+    "eyJmaWQiOjc3MjY1MiwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDlFZEZiZGE3ZDY5ZjViYTc4MmQ0QThBNzJjZDVkQzY3NmMxYTQxYmMifQ",
+  payload: "eyJkb21haW4iOiJnbWduLWJpY2UudmVyY2VsLmFwcCJ9",
+  signature:
+    "henmc0uOalJgE+gaVl0S11TuV6ePPSsDd0Tgf8m9KJtd9x/GHxgnMFPygVTtkTzMhZvHbzquwJ/4gUJENsrtMBw=",
 } as const;
 
 const MINIAPP_METADATA = {
@@ -22,7 +24,7 @@ const MINIAPP_METADATA = {
   heroImageUrl: getAppHeroUrl(CANONICAL_SITE_URL),
   buttonTitle: "Tap GM",
   splashImageUrl: getAppSplashUrl(CANONICAL_SITE_URL),
-  splashBackgroundColor: "#050508",
+  splashBackgroundColor: "#eeccff",
   webhookUrl: `${CANONICAL_SITE_URL}/api/webhook`,
   description:
     "Tap GM on Base Mainnet. 3 free GMs per day, earn points for a future airdrop.",
@@ -33,15 +35,9 @@ const MINIAPP_METADATA = {
 } as const;
 
 export function buildFarcasterManifest() {
-  const manifest: Record<string, unknown> = {
+  return {
+    accountAssociation: FARCASTER_ACCOUNT_ASSOCIATION,
     miniapp: MINIAPP_METADATA,
     frame: MINIAPP_METADATA,
   };
-
-  const { header, payload, signature } = FARCASTER_ACCOUNT_ASSOCIATION;
-  if (header && payload && signature) {
-    manifest.accountAssociation = FARCASTER_ACCOUNT_ASSOCIATION;
-  }
-
-  return manifest;
 }
