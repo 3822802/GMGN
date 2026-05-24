@@ -1,4 +1,4 @@
-# GMGN 123456
+# GMGN 1234567
 
 **GMGN** — Base mini app: daily GM, points, airdrop.
 
