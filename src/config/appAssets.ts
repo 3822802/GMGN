@@ -1,7 +1,28 @@
+/** Verified Farcaster domain — manifest URLs must match accountAssociation */
+export const FARCASTER_MANIFEST_ORIGIN = "https://gmgn-bice.vercel.app";
+
 /** Set NEXT_PUBLIC_SITE_URL on Vercel after first deploy */
-export const CANONICAL_SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-  "http://localhost:3000";
+function resolveCanonicalSiteUrl(): string {
+  const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+  const isLocal =
+    !fromEnv ||
+    fromEnv.includes("localhost") ||
+    fromEnv.includes("127.0.0.1");
+
+  if (fromEnv && !isLocal) {
+    return fromEnv.startsWith("http") ? fromEnv : `https://${fromEnv}`;
+  }
+
+  const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL?.replace(
+    /\/$/,
+    "",
+  );
+  if (vercelHost) return `https://${vercelHost}`;
+
+  return fromEnv ?? "http://localhost:3000";
+}
+
+export const CANONICAL_SITE_URL = resolveCanonicalSiteUrl();
 
 export const APP_ICON_PATH = "/icon.png";
 export const APP_SPLASH_PATH = "/splash.png";
