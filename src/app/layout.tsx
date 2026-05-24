@@ -43,6 +43,8 @@ export const metadata: Metadata = {
     "fc:miniapp": fcMiniAppEmbed,
     "fc:frame": fcMiniAppEmbed,
     "base:app_id": "6a11ed0a355ac57b9a9b644a",
+    "talentapp:project_verification":
+      "8709675ffb7a5343acce1760e018ee0761dec6a23c4c27928281958c00e7193431d81bb1085132b2f0bfc1a7508ecc2fe24e156130f3ab47f246875c0444237d",
   },
 };
 
