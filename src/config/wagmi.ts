@@ -2,6 +2,7 @@ import { http, createConfig, createStorage, cookieStorage } from "wagmi";
 import { base } from "wagmi/chains";
 import { baseAccount, injected } from "wagmi/connectors";
 
+import { BUILDER_DATA_SUFFIX } from "@/config/builder";
 import { farcasterMiniApp } from "@/lib/farcasterMiniAppConnector";
 
 export const chains = [base] as const;
@@ -21,6 +22,7 @@ export const wagmiConfig = createConfig({
   transports: {
     [base.id]: http("https://mainnet.base.org"),
   },
+  dataSuffix: BUILDER_DATA_SUFFIX,
 });
 
 export function getConfig() {

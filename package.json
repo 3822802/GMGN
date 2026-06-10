@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "icons": "node scripts/optimize-icons.mjs",
+    "thumbnail": "node scripts/generate-thumbnail.mjs",
+    "screenshots": "node scripts/generate-screenshots.mjs",
     "compile": "forge build"
   },
   "dependencies": {
@@ -16,6 +18,7 @@
     "@farcaster/miniapp-core": "^0.6.0",
     "@tanstack/react-query": "^5.100.9",
     "next": "16.2.6",
+    "ox": "^0.14.29",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "sharp": "^0.34.5",

@@ -41,9 +41,5 @@ await writePng(await sharp(base).resize(180, 180).toBuffer(), path.join(publicDi
 // Farcaster / Base mini app assets
 await writePng(await sharp(base).resize(512, 512).toBuffer(), path.join(publicDir, "icon.png"));
 await writePng(await sharp(base).resize(512, 512).toBuffer(), path.join(publicDir, "splash.png"));
-await writePng(
-  await sharp(base).resize(1200, 800, { fit: "contain", background: "#050508" }).toBuffer(),
-  path.join(publicDir, "image.png"),
-);
-
 console.log("Icons written to public/");
+console.log("Run: npm run thumbnail");

@@ -5,6 +5,8 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
+
+import { BUILDER_DATA_SUFFIX } from "@/config/builder";
 import { formatEther, parseUnits } from "viem";
 
 import {
@@ -90,6 +92,7 @@ export function DeployPanel({
       args: [name, symbol, supply],
       chainId: DEPLOY_CHAIN_ID,
       value: isPaidDeploy ? feeWei : BigInt(0),
+      dataSuffix: BUILDER_DATA_SUFFIX,
     });
   };
 
@@ -99,17 +102,11 @@ export function DeployPanel({
     initialSupply.trim().length > 0;
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <p className="text-center text-xs text-[var(--cyber-muted)]">
-        {freeDeployAvailable
-          ? `1 FREE DEPLOY · +${POINTS_PER_FREE_DEPLOY} PTS`
-          : `PAID DEPLOY · ${feeLabel} ETH · +${POINTS_PER_PAID_DEPLOY} PTS`}
-      </p>
-
-      <div className="cyber-panel flex flex-col gap-3 p-4">
-        <label className="flex flex-col gap-1">
-          <span className="cyber-label text-[10px] text-[var(--cyber-purple)]">
-            TOKEN_NAME
+    <div className="flex w-full flex-col gap-2">
+      <div className="cyber-panel grid grid-cols-2 gap-2 p-3">
+        <label className="col-span-2 flex flex-col gap-0.5">
+          <span className="cyber-label text-[8px] text-[var(--cyber-purple)]">
+            NAME
           </span>
           <input
             type="text"
@@ -117,13 +114,13 @@ export function DeployPanel({
             onChange={(e) => setTokenName(e.target.value)}
             placeholder="My Token"
             maxLength={32}
-            className="rounded border border-[var(--cyber-cyan)]/30 bg-black/50 px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--cyber-cyan)] focus:shadow-[0_0_12px_rgba(0,245,255,0.2)]"
+            className="rounded border border-[var(--cyber-cyan)]/30 bg-black/50 px-2 py-1.5 text-xs text-white outline-none focus:border-[var(--cyber-cyan)]"
           />
         </label>
 
-        <label className="flex flex-col gap-1">
-          <span className="cyber-label text-[10px] text-[var(--cyber-purple)]">
-            TOKEN_SYMBOL
+        <label className="flex flex-col gap-0.5">
+          <span className="cyber-label text-[8px] text-[var(--cyber-purple)]">
+            SYMBOL
           </span>
           <input
             type="text"
@@ -131,13 +128,13 @@ export function DeployPanel({
             onChange={(e) => setTokenSymbol(e.target.value.toUpperCase())}
             placeholder="MTK"
             maxLength={11}
-            className="rounded border border-[var(--cyber-cyan)]/30 bg-black/50 px-3 py-2.5 font-mono text-sm uppercase text-white outline-none focus:border-[var(--cyber-cyan)]"
+            className="rounded border border-[var(--cyber-cyan)]/30 bg-black/50 px-2 py-1.5 font-mono text-xs uppercase text-white outline-none focus:border-[var(--cyber-cyan)]"
           />
         </label>
 
-        <label className="flex flex-col gap-1">
-          <span className="cyber-label text-[10px] text-[var(--cyber-purple)]">
-            INITIAL_SUPPLY
+        <label className="flex flex-col gap-0.5">
+          <span className="cyber-label text-[8px] text-[var(--cyber-purple)]">
+            SUPPLY
           </span>
           <input
             type="text"
@@ -145,11 +142,8 @@ export function DeployPanel({
             value={initialSupply}
             onChange={(e) => setInitialSupply(e.target.value)}
             placeholder="1000000"
-            className="rounded border border-[var(--cyber-cyan)]/30 bg-black/50 px-3 py-2.5 font-mono text-sm text-white outline-none focus:border-[var(--cyber-cyan)]"
+            className="rounded border border-[var(--cyber-cyan)]/30 bg-black/50 px-2 py-1.5 font-mono text-xs text-white outline-none focus:border-[var(--cyber-cyan)]"
           />
-          <span className="text-[10px] text-[var(--cyber-muted)]">
-            Whole tokens (18 decimals applied onchain)
-          </span>
         </label>
       </div>
 
@@ -157,7 +151,7 @@ export function DeployPanel({
         type="button"
         onClick={handleDeploy}
         disabled={!canSubmit || isPending || isConfirming}
-        className={`cyber-btn w-full py-6 text-lg font-black disabled:cursor-not-allowed disabled:opacity-40 ${
+        className={`cyber-btn w-full py-7 text-xl font-black disabled:cursor-not-allowed disabled:opacity-40 ${
           isPaidDeploy ? "cyber-btn-primary cyber-btn-paid" : "cyber-btn-primary"
         }`}
       >
@@ -170,6 +164,12 @@ export function DeployPanel({
               : "▸ DEPLOY // FREE"}
       </button>
 
+      <p className="text-center text-[10px] text-[var(--cyber-muted)]">
+        {freeDeployAvailable
+          ? `FREE · +${POINTS_PER_FREE_DEPLOY} PTS`
+          : `PAID · ${feeLabel} ETH · +${POINTS_PER_PAID_DEPLOY} PTS`}
+      </p>
+
       {writeError && (
         <p className="text-center text-sm text-red-400">
           {writeError.message.split("\n")[0]}
@@ -177,7 +177,7 @@ export function DeployPanel({
       )}
 
       {isSuccess && hash && (
-        <div className="cyber-panel flex flex-col gap-2 p-4 text-center text-sm">
+        <div className="cyber-panel flex flex-col gap-1.5 p-3 text-center text-xs">
           <p className="cyber-accent-yellow font-bold">▸ TOKEN_DEPLOYED</p>
           {deployedToken && (
             <a

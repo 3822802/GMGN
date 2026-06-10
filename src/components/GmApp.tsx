@@ -8,6 +8,8 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
+
+import { BUILDER_DATA_SUFFIX } from "@/config/builder";
 import { formatEther } from "viem";
 
 import { DeployPanel } from "@/components/DeployPanel";
@@ -107,41 +109,39 @@ export function GmApp() {
       functionName: "gm",
       chainId: DEPLOY_CHAIN_ID,
       value: isPaidGm ? feeWei : BigInt(0),
+      dataSuffix: BUILDER_DATA_SUFFIX,
     });
   };
 
+  const showActions =
+    isConnected && isContractConfigured && !wrongChain;
+
   return (
-    <div className="flex w-full flex-col items-center gap-7">
+    <div className="flex w-full flex-col items-center gap-4">
       <header className="text-center">
-        <p className="cyber-label cyber-flicker">
-          // BASE_MAINNET · {inMiniApp ? "FARCASTER_NODE" : "WEB_GATE"}
+        <p className="cyber-label cyber-flicker text-[10px]">
+          // BASE · {inMiniApp ? "FARCASTER" : "WEB"}
         </p>
-        <h1 className="cyber-title cyber-flicker mt-3 text-5xl font-black text-white">
+        <h1 className="cyber-title cyber-flicker mt-1.5 text-4xl font-black text-white">
           GMGN
         </h1>
-        <p className="mt-4 text-sm leading-relaxed text-[var(--cyber-muted)]">
-          GM: {FREE_GM_PER_DAY} free/day{" "}
-          <span className="cyber-glow-text">+{POINTS_PER_FREE_GM}</span>
-          {" · "}
-          paid <span className="cyber-glow-text">+{POINTS_PER_PAID_GM}</span>
-          {" · "}
-          Deploy: 1 free{" "}
-          <span className="cyber-glow-text">+{POINTS_PER_FREE_DEPLOY}</span>
-          {" · "}
-          paid <span className="cyber-glow-text">+{POINTS_PER_PAID_DEPLOY}</span>
+        <p className="mt-2 text-[11px] leading-snug text-[var(--cyber-muted)]">
+          GM {FREE_GM_PER_DAY}×<span className="cyber-glow-text">+{POINTS_PER_FREE_GM}</span>
+          {" / "}paid <span className="cyber-glow-text">+{POINTS_PER_PAID_GM}</span>
+          {" · "}Deploy 1×<span className="cyber-glow-text">+{POINTS_PER_FREE_DEPLOY}</span>
+          {" / "}paid <span className="cyber-glow-text">+{POINTS_PER_PAID_DEPLOY}</span>
         </p>
       </header>
 
-      <div className="cyber-panel cyber-panel-warn w-full px-4 py-3 text-center text-sm text-[var(--cyber-yellow)]">
-        ◈ GM + TOKEN DEPLOY — STACK POINTS FOR AIRDROP
+      <div className="cyber-panel cyber-panel-warn w-full px-3 py-2 text-center text-[11px] text-[var(--cyber-yellow)]">
+        ◈ STACK POINTS FOR AIRDROP
       </div>
 
       {!isContractConfigured && (
-        <div className="cyber-panel cyber-panel-danger w-full px-4 py-3 text-sm text-red-300">
+        <div className="cyber-panel cyber-panel-danger w-full px-3 py-2 text-xs text-red-300">
           <span className="cyber-label text-red-400">// CONTRACT_NULL</span>
-          <p className="mt-2">
-            Deploy <code className="text-[var(--cyber-cyan)]">GMGNHub</code> on
-            Base → set{" "}
+          <p className="mt-1">
+            Deploy <code className="text-[var(--cyber-cyan)]">GMGNHub</code> → set{" "}
             <code className="text-[var(--cyber-cyan)]">HUB_CONTRACT_ADDRESS</code>
           </p>
         </div>
@@ -149,36 +149,18 @@ export function GmApp() {
 
       <ConnectWallet />
 
-      {isConnected && (
-        <div className="grid w-full grid-cols-2 gap-3">
-          <StatCard label="YOUR_GMS" value={gmCount?.toString() ?? "0"} />
-          <StatCard
-            label="YOUR_POINTS"
-            value={points?.toString() ?? "0"}
-            highlight
-          />
-          <StatCard
-            label="DEPLOYS"
-            value={deployCount?.toString() ?? "0"}
-          />
-          <StatCard
-            label="FREE_GM"
-            value={`${freeLeft}/${FREE_GM_PER_DAY}`}
-          />
-          <StatCard
-            label="FREE_DEPLOY"
-            value={freeDeployAvailable ? "YES" : "USED"}
-            className="col-span-2"
-          />
-          <StatCard
-            label="GLOBAL"
-            value={`${totalGms?.toString() ?? "0"} GM · ${totalDeploys?.toString() ?? "0"} DEP`}
-            className="col-span-2"
-          />
-        </div>
+      {wrongChain && (
+        <button
+          type="button"
+          onClick={() => switchChain({ chainId: DEPLOY_CHAIN_ID })}
+          disabled={isSwitching}
+          className="cyber-btn cyber-btn-solid w-full py-3 text-xs font-bold disabled:opacity-40"
+        >
+          {isSwitching ? "SWITCHING…" : "▸ SWITCH TO BASE"}
+        </button>
       )}
 
-      {isConnected && isContractConfigured && !wrongChain && (
+      {showActions && (
         <div className="flex w-full gap-2">
           <TabButton active={tab === "gm"} onClick={() => setTab("gm")}>
             ▸ GM
@@ -189,24 +171,13 @@ export function GmApp() {
         </div>
       )}
 
-      {wrongChain && (
-        <button
-          type="button"
-          onClick={() => switchChain({ chainId: DEPLOY_CHAIN_ID })}
-          disabled={isSwitching}
-          className="cyber-btn cyber-btn-solid w-full py-4 text-sm font-bold disabled:opacity-40"
-        >
-          {isSwitching ? "SWITCHING…" : "▸ SWITCH TO BASE"}
-        </button>
-      )}
-
-      {isConnected && !wrongChain && isContractConfigured && tab === "gm" && (
-        <>
+      {showActions && tab === "gm" && (
+        <div className="flex w-full flex-col gap-2">
           <button
             type="button"
             onClick={handleGm}
             disabled={!canGm || isPending || isConfirming}
-            className={`cyber-btn gm-pulse w-full py-8 text-2xl font-black disabled:cursor-not-allowed disabled:opacity-40 ${
+            className={`cyber-btn gm-pulse w-full py-7 text-xl font-black disabled:cursor-not-allowed disabled:opacity-40 ${
               isPaidGm ? "cyber-btn-primary cyber-btn-paid" : "cyber-btn-primary"
             }`}
           >
@@ -221,14 +192,14 @@ export function GmApp() {
                     : "▸ GM // FREE"}
           </button>
 
-          <p className="text-center text-xs text-[var(--cyber-muted)]">
+          <p className="text-center text-[10px] text-[var(--cyber-muted)]">
             {isPaidGm
-              ? `PAID_TX · ${feeLabel} ETH · +${POINTS_PER_PAID_GM} PTS`
-              : `FREE_TX · +${POINTS_PER_FREE_GM} PTS · ${freeLeft} LEFT (UTC)`}
+              ? `PAID · ${feeLabel} ETH · +${POINTS_PER_PAID_GM} PTS`
+              : `FREE · +${POINTS_PER_FREE_GM} PTS · ${freeLeft} LEFT`}
           </p>
 
           {writeError && (
-            <p className="text-center text-sm text-red-400">
+            <p className="text-center text-xs text-red-400">
               {writeError.message.split("\n")[0]}
             </p>
           )}
@@ -238,15 +209,15 @@ export function GmApp() {
               href={explorerTxUrl(hash)}
               target="_blank"
               rel="noreferrer"
-              className="cyber-glow-text text-sm hover:underline"
+              className="cyber-glow-text text-center text-xs hover:underline"
             >
               ▸ VIEW ON BASESCAN
             </a>
           )}
-        </>
+        </div>
       )}
 
-      {isConnected && !wrongChain && isContractConfigured && tab === "deploy" && (
+      {showActions && tab === "deploy" && (
         <DeployPanel
           freeDeployAvailable={freeDeployAvailable}
           deployFeeOnChain={deployFeeOnChain}
@@ -254,7 +225,30 @@ export function GmApp() {
         />
       )}
 
-      <footer className="text-center text-xs text-[var(--cyber-muted)]">
+      {isConnected && (
+        <div className="grid w-full grid-cols-4 gap-2">
+          <StatCard label="GMS" value={gmCount?.toString() ?? "0"} />
+          <StatCard
+            label="PTS"
+            value={points?.toString() ?? "0"}
+            highlight
+          />
+          <StatCard label="DEP" value={deployCount?.toString() ?? "0"} />
+          <StatCard label="FREE" value={`${freeLeft}/${FREE_GM_PER_DAY}`} />
+          <StatCard
+            label="DEPLOY"
+            value={freeDeployAvailable ? "FREE" : "PAID"}
+            className="col-span-2"
+          />
+          <StatCard
+            label="GLOBAL"
+            value={`${totalGms?.toString() ?? "0"}·${totalDeploys?.toString() ?? "0"}`}
+            className="col-span-2"
+          />
+        </div>
+      )}
+
+      <footer className="text-center text-[10px] text-[var(--cyber-muted)]">
         <span className="opacity-60">GM</span>{" "}
         <a
           href="https://onchaingm.com/"
@@ -292,7 +286,7 @@ function TabButton({
     <button
       type="button"
       onClick={onClick}
-      className={`cyber-btn flex-1 py-3 text-xs font-bold ${
+      className={`cyber-btn flex-1 py-2.5 text-xs font-bold ${
         active ? "cyber-btn-primary" : "cyber-btn-ghost"
       }`}
     >
@@ -313,12 +307,12 @@ function StatCard({
   className?: string;
 }) {
   return (
-    <div className={`cyber-stat px-4 py-4 ${className}`}>
-      <p className="cyber-label text-[10px] text-[var(--cyber-purple)]">
+    <div className={`cyber-stat px-2 py-2 ${className}`}>
+      <p className="cyber-label text-[8px] text-[var(--cyber-purple)]">
         {label}
       </p>
       <p
-        className={`cyber-stat-value mt-2 text-2xl font-bold ${
+        className={`cyber-stat-value mt-0.5 text-base font-bold ${
           highlight ? "cyber-accent-yellow" : "text-white"
         }`}
       >
