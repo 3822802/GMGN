@@ -32,7 +32,6 @@ function buildMiniappMetadata(origin: string) {
     subtitle: "Daily GM · stack points",
     primaryCategory: "social",
     tags: ["gm", "base", "points", "airdrop", "daily"],
-    noindex: true,
   } as const;
 }
 
